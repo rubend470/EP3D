@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function admin() { return request.auth != null && request.auth.token.admin == true; }
+    function imageAt(images, i) { return images.size() <= i || (images[i] is string && images[i].size() <= 2048 && images[i].matches('https://.*')); }
+    function validProduct(p) {
+      return p.keys().hasAll(['name','description','priceMinor','wholesalePriceMinor','availability','images'])
+        && p.keys().hasOnly(['name','description','priceMinor','wholesalePriceMinor','availability','images'])
+        && p.name is string && p.name.size() > 0 && p.name.size() <= 120
+        && p.description is string && p.description.size() <= 1000
+        && p.priceMinor is int && p.priceMinor >= 0 && p.priceMinor <= 100000000
+        && (p.wholesalePriceMinor == null || (p.wholesalePriceMinor is int && p.wholesalePriceMinor >= 0 && p.wholesalePriceMinor <= p.priceMinor))
+        && p.availability in ['bajo_pedido','agotado']
+        && p.images is list && p.images.size() <= 6
+        && imageAt(p.images,0) && imageAt(p.images,1) && imageAt(p.images,2)
+        && imageAt(p.images,3) && imageAt(p.images,4) && imageAt(p.images,5);
+    }
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if admin() && productId.matches('[a-zA-Z0-9_-]{1,128}') && validProduct(request.resource.data);
+      allow delete: if admin();
+    }
+    // No colección de roles editable por el cliente. Todo lo demás se deniega.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

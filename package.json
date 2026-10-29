@@ -1,0 +1,31 @@
+{
+  "name": "ep-3d",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "test:rules": "firebase emulators:exec --project demo-ep3d --only firestore,storage 'vitest run tests/rules.test.ts'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "firebase": "^12.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "firebase-tools": "^14.0.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.0",
+    "vite": "^6.4.0",
+    "vitest": "^3.2.0"
+  }
+}
