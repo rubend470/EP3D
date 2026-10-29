@@ -238,7 +238,9 @@ export default function App() {
                     (p.name + ' ' + p.description)
                       .toLocaleLowerCase()
                       .includes(search.toLocaleLowerCase()),
-                  ).length && <p>No hay piezas para mostrar.</p>}
+                  ).length && (
+                    <p>Aún no hay productos publicados. EP 3D está preparando su catálogo.</p>
+                  )}
                 </div>
               )}
             </section>
@@ -346,7 +348,9 @@ export default function App() {
                 <p className="small setup-note">
                   {isDemo
                     ? 'Demo: el envío está desactivado.'
-                    : 'Pendiente configurar moneda y WhatsApp de la tienda.'}
+                    : !validPhone
+                      ? 'Pendiente configurar el WhatsApp de la tienda.'
+                      : 'Pendiente configurar la moneda de la tienda.'}
                 </p>
               )}
             </aside>

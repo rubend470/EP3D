@@ -34,7 +34,9 @@ export default function CheckoutBar({
             {!configured
               ? isDemo
                 ? 'Demo · WhatsApp desactivado'
-                : 'Pendiente configurar WhatsApp y moneda'
+                : !validPhone
+                  ? 'Pendiente configurar WhatsApp'
+                  : 'Pendiente configurar moneda'
               : 'Revisa tu carrito. Tú envías el mensaje en WhatsApp.'}
           </small>
         </div>

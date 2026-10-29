@@ -4,7 +4,8 @@ if (!['demo', 'firebase'].includes(mode))
   throw new Error('VITE_DATA_MODE debe ser demo o firebase.');
 export const isDemo = mode === 'demo';
 export const phone = env.VITE_WHATSAPP_NUMBER || '';
-export const currency = env.VITE_CURRENCY || '';
+export const currency = env.VITE_CURRENCY || 'USD';
+export const storageEnabled = !isDemo && env.VITE_STORAGE_ENABLED === 'true';
 export const validPhone = /^[1-9]\d{7,14}$/.test(phone);
 export const validCurrency =
   /^[A-Z]{3}$/.test(currency) &&

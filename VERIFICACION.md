@@ -1,6 +1,6 @@
 # Verificación del arranque local
 
-Ejecutado en la Mac, dentro de este proyecto. No equivale a pruebas en un executor cloud independiente ni en un proyecto Firebase real.
+Ejecutado en la Mac, dentro de este proyecto. No equivale a pruebas en un executor cloud independiente. La primera publicación en Firebase real también se verificó según se detalla abajo.
 
 ## Comprobado
 
@@ -13,9 +13,19 @@ Ejecutado en la Mac, dentro de este proyecto. No equivale a pruebas en un execut
 
 ## Pendiente
 
-- Auth real, asignación de custom claim por operador autorizado y sesión con administrador real.
+- Inicialización de Authentication y proveedor correo/contraseña, asignación de custom claim por operador autorizado y sesión con administrador real.
 - CRUD y optimización/subida de fotos de extremo a extremo con Firebase de pruebas. Las reglas se probaron con emuladores; el formulario no ha operado una cuenta real.
 - Dispositivos físicos y más navegadores; no se afirma auditoría exhaustiva de accesibilidad.
 - Catálogo, fotos, logo, moneda y WhatsApp reales.
-- Entorno de ejecución cloud independiente y primera instalación allí. La sincronización de Git debe comprobarse comparando HEAD local y `refs/heads/main` remoto.
-- Configuración y publicación en Firebase, decisión informada sobre Blaze para Storage. Sin despliegue, facturación ni credenciales persistentes creadas.
+- Entorno de ejecución cloud independiente y primera instalación allí. La sincronización de Git se verifica comparando HEAD local y `refs/heads/main` remoto después de cada push.
+- Decisión informada sobre Blaze para Storage. No se activó facturación ni Storage y no se crearon credenciales persistentes nuevas.
+
+## Primera publicación real en Firebase
+
+- Proyecto verificado: `ep3d-1fb00` (EP3D); app web existente. Sitio asociado `ep3dcatalago`, sin releases previos al primer despliegue.
+- Firestore API habilitada y primera base `(default)` creada en `us-east1`, edición Standard. La respuesta confirma `freeTier: true`; PITR desactivado. No existían bases que preservar.
+- Build de producción en modo `firebase`, USD, sin teléfono inventado y Storage desactivado. No se cargaron los datos demo a la base real.
+- Despliegue autorizado limitado a Hosting, reglas e índices de Firestore. No se desplegó Storage ni Functions.
+- Lectura anónima real de `/products`: HTTP 200, cero productos. Navegador móvil: carga desde Firestore sin error y estado de catálogo vacío, USD 0,00, carrito vacío y WhatsApp desactivado por falta del número real.
+- Ruta `/#admin`: muestra formulario privado sin registro público. Authentication todavía devuelve `CONFIGURATION_NOT_FOUND` al consultar su configuración; falta inicializarlo desde la consola. No se probó inicio de sesión ni CRUD real.
+- URL: https://ep3dcatalago.web.app . Las capturas locales anteriores muestran el modo demo; `evidence/firebase-catalogo-movil.jpg` corresponde a la primera versión real.

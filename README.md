@@ -1,6 +1,15 @@
 # EP 3D — catálogo y administración
 
-Base **local** independiente. React + TypeScript + Vite; Firebase Hosting para el frontend estático, Firestore para productos, Authentication para administradores y Cloud Storage para fotos. React permite usar Hosting sin un servidor adicional; Laravel requeriría un runtime externo. No se creó ni modificó un proyecto Firebase, no se activó facturación y no se publicó nada.
+Proyecto independiente. React + TypeScript + Vite; Firebase Hosting para el frontend estático, Firestore para productos, Authentication para administradores y Cloud Storage para fotos. React permite usar Hosting sin un servidor adicional; Laravel requeriría un runtime externo. Primera versión publicada, con autorización de Rubén, en [ep3dcatalago.web.app](https://ep3dcatalago.web.app). Se usa exclusivamente el proyecto Firebase `ep3d-1fb00`; no se activó facturación ni Cloud Storage.
+
+## Estado actual
+
+- Hosting: `ep3dcatalago`, con catálogo mobile-first y barra fija de WhatsApp.
+- Firestore: base `(default)`, edición Standard, región `us-east1`, nivel gratuito confirmado por la API; reglas e índices desplegados. Catálogo real vacío, sin productos ni precios inventados.
+- Moneda: **USD**, confirmada por Rubén. WhatsApp real pendiente, por lo que el botón sigue desactivado.
+- Authentication: la ruta del panel funciona; falta inicializar Authentication desde la consola de Firebase, habilitar correo/contraseña y autorizar la cuenta administradora. No se crearon cuentas ni contraseñas.
+- Fotos: `VITE_STORAGE_ENABLED=false`; productos sin fotos están soportados. Configurar Storage/Blaze con el propietario en una fase posterior.
+- GitHub: remoto `rubend470/EP3D`; cuenta del propietario autorizada para Git, rama `main`. Un repositorio remoto no reemplaza un executor cloud independiente.
 
 ## Arrancar
 
@@ -84,19 +93,19 @@ Las fotos son **públicas** por diseño. Las URLs de descarga también permiten 
 
 ## Conectar Firebase después, con Rubén
 
-1. Confirmar moneda, WhatsApp real, logo/estilo, productos/fotos. Crear un proyecto Firebase **nuevo** con su nombre definitivo. Confirmar región según compradores y costos antes de crear Firestore/Storage; esas decisiones no deben improvisarse.
-2. Registrar una app web y copiar su **configuración pública** a `.env.local` siguiendo `.env.example`; cambiar `VITE_DATA_MODE=firebase`. No subir `.env.local` a Git. Las variables `VITE_*` quedan incluidas en el frontend: jamás poner cuentas de servicio, claves privadas, contraseñas o tokens Admin ahí. La configuración web no concede permisos de administrador.
+1. Confirmar moneda, WhatsApp real, logo/estilo, productos/fotos. El proyecto existente es **`ep3d-1fb00`**, ya conectado; no crear otro. Firestore ya está en `us-east1`; revisar región y costos específicos de Storage cuando se habilite.
+2. Registrar una app web y copiar su **configuración pública** a `.env.local` siguiendo `.env.example`; cambiar `VITE_DATA_MODE=firebase`. No subir `.env.local` a Git. Para habilitar las fotos después de configurar y probar Storage con el propietario, cambiar `VITE_STORAGE_ENABLED=true`. Las variables `VITE_*` quedan incluidas en el frontend: jamás poner cuentas de servicio, claves privadas, contraseñas o tokens Admin ahí. La configuración web no concede permisos de administrador.
 3. Habilitar Firestore y Authentication con correo/contraseña. Crear la cuenta administradora de forma controlada. Un operador autorizado asigna el custom claim `admin: true` **desde un entorno confiable con Admin SDK**; esta app no puede asignarlo ni almacenar roles editables. Volver a iniciar sesión para refrescar el token. Evitar contraseñas en chat; el propietario realiza el acceso local.
 4. Cloud Storage requiere **Blaze / cuenta de facturación**. Elegir Firebase no activa ni autoriza facturación en este arranque. Revisar cuotas, región, precios vigentes y configurar alertas antes de habilitarlo. Las alertas no son un límite de gasto; US$0 no está garantizado. No se fijó una región ni se prometieron costos.
 5. Ejecutar pruebas de reglas con emuladores y después verificar el flujo con una cuenta administradora y una cuenta sin permisos en un entorno de pruebas. Las reglas locales permiten leer solo productos/fotos del catálogo; solo `request.auth.token.admin == true` puede escribir. Las demás rutas se deniegan. Un usuario autenticado común no es administrador. Firebase Admin SDK omite reglas: mantener credenciales fuera del cliente y usar IAM mínimo.
-6. Antes del primer despliegue revisar reglas, región, presupuesto, dominios autorizados, protección contra abuso (App Check), fotos y datos reales. La publicación es una fase posterior que se hará contigo, indicando el proyecto de destino explícitamente. No hay proyecto por defecto ni `.firebaserc`; se evita apuntar accidentalmente a un proyecto existente. `firebase.json` está preparado para servir `dist/` como SPA.
+6. Antes del primer despliegue revisar reglas, región, presupuesto, dominios autorizados, protección contra abuso (App Check), fotos y datos reales. La publicación es una fase posterior que se hará contigo, indicando el proyecto de destino explícitamente. No hay proyecto por defecto ni `.firebaserc`; indicar siempre `--project ep3d-1fb00`. `firebase.json` fija el sitio `ep3dcatalago`. `firebase.json` está preparado para servir `dist/` como SPA.
 
 Documentación oficial consultada: [claims de administrador](https://firebase.google.com/docs/auth/admin/custom-claims), [pruebas locales de reglas](https://firebase.google.com/docs/rules/unit-tests), [requisito Blaze para Storage](https://firebase.google.com/docs/storage/faqs-storage-changes-announced-sept-2024).
 
 ## Datos pendientes
 
-- Moneda y país/mercado de venta.
+- Moneda confirmada: USD. Mercado: Venezuela.
 - WhatsApp real de EP 3D y contacto separado para personalizaciones, si se quiere enlazar.
 - Logo, colores, fotos, nombres, descripciones y precios reales.
 - Precios al mayor opcionales para los productos que ya los tengan definidos.
-- Nombre/región del proyecto Firebase y cuenta administradora que autorizará el propietario.
+- Cuenta administradora que autorizará el propietario. Proyecto y región de Firestore ya confirmados.

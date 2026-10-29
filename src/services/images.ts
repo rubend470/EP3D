@@ -33,7 +33,7 @@ export async function optimizeImage(file: File): Promise<Blob> {
 export async function uploadImage(productId: string, file: File) {
   const blob = await optimizeImage(file);
   const [{ storage }, { ref, uploadBytes, getDownloadURL }] = await Promise.all([
-    import('../data/firebase'),
+    import('../data/storage'),
     import('firebase/storage'),
   ]);
   const target = ref(storage, `products/${productId}/${crypto.randomUUID()}.webp`);

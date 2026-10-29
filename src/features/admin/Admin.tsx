@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import type { User } from 'firebase/auth';
-import { isDemo, money, validCurrency } from '../../config';
+import { isDemo, money, storageEnabled, validCurrency } from '../../config';
 import { loadProducts, removeProduct, saveProduct } from '../../data/products';
 import type { Product } from '../../domain/catalog';
 import { observeAdmin, loginAdmin, logoutAdmin } from '../../services/adminAuth';
@@ -277,7 +277,7 @@ export default function Admin({ onSaved }: { onSaved: () => Promise<void> }) {
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
-                      disabled={draft.images.length >= 6}
+                      disabled={!storageEnabled || draft.images.length >= 6}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) void photo(file);
@@ -285,6 +285,12 @@ export default function Admin({ onSaved }: { onSaved: () => Promise<void> }) {
                       }}
                     />
                   </label>
+                  {!storageEnabled && (
+                    <p className="small">
+                      Subida de fotos pendiente de habilitar Cloud Storage. Puedes crear productos
+                      sin fotos.
+                    </p>
+                  )}
                   <div className="admin-photos">
                     {draft.images.map((url, i) => (
                       <div key={url}>

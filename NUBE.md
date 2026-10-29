@@ -31,7 +31,7 @@ En una plataforma que necesite escuchar en todas las interfaces para reenviar la
 
 1. Conectar el repositorio al entorno de código en nube que elija Rubén. Comprobar disponibilidad, límites, costos y si requiere mantener la Mac encendida; debe tener su propio executor para cumplir este objetivo.
 2. Verificar instalación limpia, compilación y pruebas en ese executor. No afirmar que se probó en nube hasta hacerlo allí.
-3. Configurar Firebase con el propietario siguiendo README.md. No copiar una cuenta de servicio al frontend. Definir el acceso de despliegue con permisos mínimos y el proyecto explícito, sin generar credenciales persistentes durante este arranque.
-4. Publicar solo cuando Rubén continúe esa fase. Un futuro proceso CI puede compilar y probar cada cambio, y publicar versiones bajo una política de aprobación acordada. No se configuró despliegue automático ahora.
+3. Firebase Hosting y Firestore ya están conectados en `ep3d-1fb00`. Terminar Authentication y Storage con el propietario siguiendo README.md. No copiar una cuenta de servicio al frontend. Definir el acceso de despliegue con permisos mínimos y el proyecto explícito, sin generar credenciales persistentes durante este arranque.
+4. La primera versión de Hosting ya está publicada con autorización de Rubén. Para futuras versiones, usar explícitamente `--project ep3d-1fb00` y conservar la revisión del destino. Un futuro proceso CI puede compilar y probar cada cambio, y publicar versiones bajo una política de aprobación acordada. No se configuró despliegue automático ahora.
 
 No es necesario duplicar el código para desarrollo local y nube: ambos usan el mismo repositorio, lockfile, comandos y esquema de datos.
